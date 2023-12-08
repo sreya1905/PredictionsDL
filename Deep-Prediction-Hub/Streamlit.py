@@ -1,3 +1,4 @@
+
 import streamlit as st
 import numpy as np
 from PIL import Image
@@ -33,7 +34,7 @@ st.title("Deep Prediction Hub")
 st.sidebar.header("Options")
 
 # Choose between tasks
-task = st.sidebar.radio("Select Task", ("Sentiment Classification", "Tumor Detection"))
+task = st.sidebar.radio("Select Task", ("Sentiment Classification", "Tumor Detection"), key="task_selection")
 
 if task == "Sentiment Classification":
     st.subheader("Sentiment Classification")
@@ -44,7 +45,7 @@ if task == "Sentiment Classification":
 
     if new_review_text.strip():
         st.subheader("Choose Model for Sentiment Classification")
-        model_option = st.selectbox("Select Model", ("Perceptron", "Backpropagation", "DNN", "RNN", "LSTM"))
+        model_option = st.selectbox("Select Model", ("Perceptron", "Backpropagation", "DNN", "RNN", "LSTM"), key="model_selection")
 
         # Load models dynamically based on the selected option
         if model_option == "Perceptron":
@@ -54,9 +55,9 @@ if task == "Sentiment Classification":
             with open('BP.pkl', 'rb') as file:
                 model = pickle.load(file)
         elif model_option == "DNN":
-            model = load_model('DP.keras')
+            model = load_model('DP.h5')
         elif model_option == "RNN":
-            model = load_model('RN.keras')
+            model = load_model('RN.h5')
         elif model_option == "LSTM":
             model = load_model('LS.keras')
 
@@ -71,7 +72,7 @@ elif task == "Tumor Detection":
 
     if uploaded_file is not None:
         # Load the tumor detection model
-        model = load_model('CN.keras')
+        model = load_model('CN.h5')
         st.image(uploaded_file, caption="Uploaded Image.", use_column_width=False, width=200)
         st.write("")
 
@@ -79,3 +80,4 @@ elif task == "Tumor Detection":
             result = tumor_detection(uploaded_file, model)
             st.subheader("Tumor Detection Result")
             st.write(f"**{result}**")
+
